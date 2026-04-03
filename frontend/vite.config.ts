@@ -12,14 +12,16 @@ export default defineConfig(({ mode }) => {
       react(),
       babel({ presets: [reactCompilerPreset()] })
     ],
-    server: {
-      proxy: {
-        '/api': {
-          target: env.VITE_PROXY_TARGET,
-          changeOrigin: true,
-          secure: false,
+    ...(mode === 'development' && {
+      server: {
+        proxy: {
+          '/api': {
+            target: env.VITE_PROXY_TARGET || 'http://localhost:3000',
+            changeOrigin: true,
+            secure: false,
+          },
         },
       },
-    },
+    }),
   }
 })
